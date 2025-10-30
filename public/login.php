@@ -23,6 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // You can redirect or start session here
         $_SESSION['name']=$user['name'];
         $_SESSION['role']=$user['role'];
+        $_SESSION['id']=$user['id'];
+        if($user['role']==='user'){
+            $message = "Login successful!";
+            header('location:userdashboard.php?message='.urlencode($message));
+            exit;
+        }
+        else{
+            $message = "Login successful!";
+            header('location:admin/users.php?message='.urlencode($message));
+            exit;
+
+        }
 
     } else {
         $message = "Login failed! Check email or password.";
@@ -41,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="bg-light">
 <?php
-if($_SESSION['name']){
+if(isset($_SESSION['name'])){
     echo $_SESSION['name']."<br>";
     echo $_SESSION['role'];
 }

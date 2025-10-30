@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
 require_once(__DIR__ . "/../../classes/Database.php");
 require_once(__DIR__ . "/../../classes/Admin.php");
 
@@ -26,11 +27,11 @@ if(isset($_GET['id'])){
 // Handle update request
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $id = filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT);
-    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $name = filter_var($_POST['name']);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = trim($_POST['password']);
-    $role = filter_var($_POST['role'], FILTER_SANITIZE_STRING);
-    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    $role = filter_var($_POST['role']);
+    $status = filter_var($_POST['status']);
 
     if($admin->updateProfile($id, $name, $email, $password, $role, $status)){
         echo '<div class="alert alert-success text-center">User updated successfully!</div>';

@@ -12,7 +12,16 @@ $db = $database->getConnection();
 
 $admin = new Admin($db);
 $message = isset($_GET['message']) ? htmlspecialchars($_GET['message']) : '';
+
+// if(isset($_GET['search'])){
+    $search=$_GET['searchcontent'] ?? '';
+    if(!empty($search)){
+    $users=$admin->searchUser($search);
+    }
+// }
+else{
 $users = $admin->getAllUsers();
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,12 +35,23 @@ $users = $admin->getAllUsers();
 </head>
 <body class="bg-light">
    
-                    <?php if(isset($message)): ?>
-                        <div class="alert alert-info text-center"><?= $message ?></div>
-                    <?php endif; ?>
+        <?php if(isset($message)): ?>
+             <div class="alert alert-info text-center"><?= $message ?></div>
+         <?php endif; ?>
+
+        <form action="" method="get">
+            <input type="text" name="searchcontent" placeholder="search name/email">
+            <button type="submit">search</button>
+        </form>
+    <a href="logout.php" class="btn btn-primary">logout</a>
+
 
 <div class="container mt-5">
+    <?php if(empty($search)) { ?>
     <h2 class="mb-4 text-center">All Users</h2>
+    <?php } else{ ?>
+    <h2 class="mb-4 text-center">Search results</h2>
+        <?php } ?>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -59,7 +79,7 @@ $users = $admin->getAllUsers();
   <input class="form-check-input" type="checkbox" 
          <?= $user['status'] === 'active' ? 'checked' : '' ?> 
          onchange="window.location.href='updatestatus.php?id=<?= $user['id'] ?>&status=' + (this.checked ? 'active' : 'inactive')">
-</div>
+ </div>
 </td>
 
 
