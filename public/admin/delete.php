@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once(__DIR__ . "/../classes/Database.php");
-require_once(__DIR__ . "/../classes/Admin.php");
+require_once(__DIR__ . "/../../classes/Database.php");
+require_once(__DIR__ . "/../../classes/admin.php");
 
 $database = new Database();
 $db = $database->getConnection();
@@ -16,7 +16,9 @@ if(isset($_GET['id'])){
 
     if($admin->deleteUser($id))
     {
-        echo "user deleted successful<br>";
+        $message="user deleted succesful";
+        header("location:users.php?message=".urlencode($message));
+        exit;
     }
     else{
         echo "failed to delete<br>";

@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 require_once(__DIR__ . "/../../classes/Database.php");
 require_once(__DIR__ . "/../../classes/Admin.php");
 
@@ -33,11 +32,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $role = filter_var($_POST['role']);
     $status = filter_var($_POST['status']);
 
-    if($admin->updateProfile($id, $name, $email, $password, $role, $status)){
-        echo '<div class="alert alert-success text-center">User updated successfully!</div>';
-    } else {
-        echo '<div class="alert alert-danger text-center">Failed to update user.</div>';
-    }
+    if ($admin->updateProfile($id, $name, $email, $password, $role, $status)) {
+    $message = "User updated successfully!";
+    header("Location: users.php?message=" . urlencode($message));
+    exit;
+} else {
+    $message = "Failed to update user.";
+    header("Location: users.php?message=" . urlencode($message));
+    exit;
+}
+
 }
 ?>
 

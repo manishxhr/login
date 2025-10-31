@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($admin->register($name, $email, $password, $role, $status)) {
         $message = "Registration successful!";
+        header("location:login.php?message=".urlencode($message));
+        exit;
     } else {
         $message = "Registration failed!";
     }

@@ -29,12 +29,15 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $email= filter_var($_POST['email']);
     $password= filter_var($_POST['password']);
     $role= filter_var($_POST['role']);
-    $nastatusme= filter_var($_POST['status']);
+    $status= filter_var($_POST['status']);
 
     if($user->updateProfile($id,$name,$email,$password,$role,$status)){
-        $message="user data updated successful";
-        header("location:userdashboard.php?message=".urlencode($message));
-        exit;
+         $message="user updated succesful";
+         header("location:userdashboard.php?message=".urlencode($message));
+         exit;
+    }
+    else{
+         echo "failed to update<br>";
     }
 }
 

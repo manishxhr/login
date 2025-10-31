@@ -10,6 +10,7 @@ class User{
     public function register($name,$email,$password,$role,$status){
         $sql="insert into $this->table (name, email, password, role, status) Values (:name, :email, :password, :role, :status)";
         $stmt= $this->conn->prepare($sql);
+        
         $hashedpass=password_hash($password,PASSWORD_DEFAULT);
         $stmt->bindParam(':name',$name);
         $stmt->bindParam(':email',$email);
@@ -46,16 +47,25 @@ class User{
     public function updateProfile($id,$name,$email,$password,$role,$status){
         $sql="update $this->table SET name=:name, email=:email, password=:password, role=:role, status=:status where id=:id";
         $stmt=$this->conn->prepare($sql);
-        $hashedpass=password_hash($password,PASSWORD_DEFAULT);
+        $currentuser= $this->getById($id);
+
+        if($currentuser['password']==$password){
+            $storepass=$password;
+        }
+        else{
+            $storepass=password_hash($password,PASSWORD_DEFAULT);
+        }
+
         $stmt->bindParam(':id',$id);
         $stmt->bindParam(':name',$name);
         $stmt->bindParam(':email',$email);
-        $stmt->bindParam(':password',$hashedpass);
+        $stmt->bindParam(':password',$storepass);
         $stmt->bindParam(':role',$role);
         $stmt->bindParam(':status',$status);
 
         return $stmt->execute();
     }
+
 
     public function changePassword($id,$password){
         $sql="update $this->table set password=:password where id=:id";
